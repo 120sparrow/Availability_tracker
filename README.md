@@ -23,3 +23,7 @@ Add to file /etc/hosts on system next host:
 127.0.0.1   availability.ua 
 127.0.0.1   adminer.availability.ua 
 ```
+
+## Run project
+
+`docker-compose up`
