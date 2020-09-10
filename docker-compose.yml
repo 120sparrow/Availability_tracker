@@ -7,6 +7,15 @@ volumes:
     driver: local
 
 services:
+  image: availability-backend
+    build: ./backend
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./backend:/app
+      - npm-cache:/root/.npm
+    command: "npm run dev"
   nginx:
     image: "nginx:1.17-alpine"
     volumes:
