@@ -7,7 +7,21 @@ volumes:
     driver: local
 
 services:
-  image: availability-backend
+  database:
+    image: "mysql:8.0"
+    command: --character-set-server=utf8 --collation-server=utf8_unicode_ci --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_socket:/var/run/mysqld
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass1234
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - database
+  backend:
+    image: availability-backend
     build: ./backend
     working_dir: /app
     environment:
@@ -16,6 +30,20 @@ services:
       - ./backend:/app
       - npm-cache:/root/.npm
     command: "npm run dev"
+    depends_on:
+      - database
+  frontend:
+    image: availability-frontend
+    build: ./frontend
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./frontend:/app
+      - npm-cache:/root/.npm
+    command: "npm run serve"
+    depends_on:
+      - backend
   nginx:
     image: "nginx:1.17-alpine"
     volumes:
