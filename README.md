@@ -27,3 +27,7 @@ Add to file /etc/hosts on system next host:
 ## Run project
 
 `docker-compose up`
+
+`docker-compose run --rm backend npx sequelize-cli db:migrate`
+ 
+`docker-compose run --rm backend npx sequelize-cli db:seed:all`
