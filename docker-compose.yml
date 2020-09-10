@@ -1,0 +1,19 @@
+version: "3"
+
+volumes:
+  npm-cache:
+    driver: local
+  mysql_socket:
+    driver: local
+
+services:
+  nginx:
+    image: "nginx:1.17-alpine"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - frontend
